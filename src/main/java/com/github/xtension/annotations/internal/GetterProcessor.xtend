@@ -1,16 +1,16 @@
 package com.github.xtension.annotations.internal
 
-import com.github.xtension.annotations.Get
-import com.github.xtension.annotations.PackageGet
-import com.github.xtension.annotations.PrivateGet
-import com.github.xtension.annotations.ProtectedGet
+import com.github.xtension.annotations.Getter
+import com.github.xtension.annotations.PackageGetter
+import com.github.xtension.annotations.PrivateGetter
+import com.github.xtension.annotations.ProtectedGetter
 import org.eclipse.xtend.lib.macro.AbstractFieldProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.FieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 
-abstract class AbstractGetProcessor extends AbstractFieldProcessor {
+abstract class AbstractGetterProcessor extends AbstractFieldProcessor {
 	override doTransform(MutableFieldDeclaration field, extension TransformationContext context) {
 		if (isLazy(field, context)) {
 			addLazyGetter(field, context)
@@ -54,7 +54,7 @@ abstract class AbstractGetProcessor extends AbstractFieldProcessor {
 			static = field.static
 			body = field.initializer
 		]
-		
+
 		val monitor = if (field.static) {
 			field.declaringType.simpleName + '.class'
 		} else {
@@ -78,7 +78,7 @@ abstract class AbstractGetProcessor extends AbstractFieldProcessor {
 			''']
 		]
 	}
-	
+
 	private def static getInitializedFlagName(FieldDeclaration field) {
 		'_' + field.simpleName + 'Initialized'
 	}
@@ -92,22 +92,22 @@ abstract class AbstractGetProcessor extends AbstractFieldProcessor {
 	def Class<?> getAnnotationClass()
 }
 
-class GetProcessor extends AbstractGetProcessor {
+class GetterProcessor extends AbstractGetterProcessor {
 	override getGetterVisibility() { Visibility::PUBLIC }
-	override getAnnotationClass() { typeof(Get) }
+	override getAnnotationClass() { typeof(Getter) }
 }
 
-class PrivateGetProcessor extends AbstractGetProcessor {
+class PrivateGetterProcessor extends AbstractGetterProcessor {
 	override getGetterVisibility() { Visibility::PRIVATE }
-	override getAnnotationClass() { typeof(PrivateGet) }
+	override getAnnotationClass() { typeof(PrivateGetter) }
 }
 
-class ProtectedGetProcessor extends AbstractGetProcessor {
+class ProtectedGetterProcessor extends AbstractGetterProcessor {
 	override getGetterVisibility() { Visibility::PROTECTED }
-	override getAnnotationClass() { typeof(ProtectedGet) }
+	override getAnnotationClass() { typeof(ProtectedGetter) }
 }
 
-class PackageGetProcessor extends AbstractGetProcessor {
+class PackageGetterProcessor extends AbstractGetterProcessor {
 	override getGetterVisibility() { Visibility::DEFAULT }
-	override getAnnotationClass() { typeof(PackageGet) }
+	override getAnnotationClass() { typeof(PackageGetter) }
 }
