@@ -5,7 +5,7 @@ import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
 import org.eclipse.xtend.lib.macro.declaration.Visibility
 
-abstract class AbstractSetProcessor extends AbstractFieldProcessor {
+abstract class AbstractSetterProcessor extends AbstractFieldProcessor {
 
 	override doTransform(MutableFieldDeclaration field, extension TransformationContext context) {
 		if (field.final) {
@@ -27,18 +27,18 @@ abstract class AbstractSetProcessor extends AbstractFieldProcessor {
 	def Visibility getSetterVisibility()
 }
 
-class SetProcessor extends AbstractSetProcessor {
+class SetterProcessor extends AbstractSetterProcessor {
 	override getSetterVisibility() { Visibility::PUBLIC }
 }
 
-class PrivateSetterProcessor extends AbstractSetProcessor {
+class PrivateSetterProcessor extends AbstractSetterProcessor {
 	override getSetterVisibility() { Visibility::PRIVATE }
 }
 
-class ProtectedSetterProcessor extends AbstractSetProcessor {
+class ProtectedSetterProcessor extends AbstractSetterProcessor {
 	override getSetterVisibility() { Visibility::PROTECTED }
 }
 
-class PackageSetterProcessor extends AbstractSetProcessor {
+class PackageSetterProcessor extends AbstractSetterProcessor {
 	override getSetterVisibility() { Visibility::DEFAULT }
 }
