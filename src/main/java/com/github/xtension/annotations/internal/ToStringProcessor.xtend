@@ -46,14 +46,14 @@ class ToStringProcessor extends AbstractClassProcessor {
 		val valuesMap = type.getValuesMap(callSuper, of, exclude)
 
 		val values = new ArrayList<String>
-		valuesMap.entrySet.forEach[
+		valuesMap.forEach[ valueName, valueExpression |
 			if (!values.empty) {
 				values.add('builder.append(", ");')
 			}
 			if (includeFieldNames) {
-				values.add('''builder.append("«key»=").append(«value»);''')
+				values.add('''builder.append("«valueName»=").append(«valueExpression»);''')
 			} else {
-				values.add('''builder.append(«value»);''')
+				values.add('''builder.append(«valueExpression»);''')
 			}
 		]
 
