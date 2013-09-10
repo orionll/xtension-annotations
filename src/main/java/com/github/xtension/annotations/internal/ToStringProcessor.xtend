@@ -63,10 +63,10 @@ class ToStringProcessor extends AbstractClassProcessor {
 				final StringBuilder builder = new StringBuilder();
 				builder.append("«type.simpleName»");
 				«IF includeHashCode»
-					builder.append("@").append(hashCode());
+					builder.append("@").append(Integer.toString(hashCode(), 16));
 				«ENDIF»
 				«IF includeIdentityHashCode»
-					builder.append("#").append(System.identityHashCode(this));
+					builder.append("#").append(Integer.toString(System.identityHashCode(this), 16));
 				«ENDIF»
 				«IF !values.empty»
 					builder.append("[");
