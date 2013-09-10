@@ -3,11 +3,15 @@ package com.github.xtension.annotations.internal
 import com.github.xtension.annotations.ToString
 import java.util.ArrayList
 import java.util.LinkedHashMap
+import java.util.List
 import java.util.Map
 import org.eclipse.xtend.lib.macro.AbstractClassProcessor
 import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.xtend.lib.macro.declaration.MutableClassDeclaration
-import java.util.List
+import org.eclipse.xtend.lib.macro.declaration.MutableFieldDeclaration
+import org.eclipse.xtend.lib.macro.declaration.MutableTypeDeclaration
+
+import static extension com.github.xtension.annotations.internal.ProcessorUtil.*
 
 class ToStringProcessor extends AbstractClassProcessor {
 
@@ -80,13 +84,13 @@ class ToStringProcessor extends AbstractClassProcessor {
 		]
 	}
 
-	private def static Map<String, String> getValuesMap(MutableClassDeclaration type, boolean callSuper, List<String> of, List<String> exclude) {
+	private def static Map<String, String> getValuesMap(MutableTypeDeclaration type, boolean callSuper, List<String> of, List<String> exclude) {
 		val values = new LinkedHashMap
 
 		if (!of.empty) {
-			of.forEach[values.put(it, it)]
+			of.forEach[values.put(it, getFieldValueExpression(type, it))]
 		} else {
-			type.getFields(exclude).forEach[values.put(simpleName, simpleName)]
+			getFields(type, exclude).forEach[values.put(simpleName, getFieldValueExpression(it))]
 		}
 
 		if (callSuper) {
@@ -96,7 +100,26 @@ class ToStringProcessor extends AbstractClassProcessor {
 		values
 	}
 
-	private def static getFields(MutableClassDeclaration type, List<String> exclude) {
+	private def static String getFieldValueExpression(MutableTypeDeclaration type, String fieldName) {
+		val field = type.findDeclaredField(fieldName)
+
+		if (field === null) {
+			fieldName
+		} else {
+			getFieldValueExpression(field)
+		}
+	}
+
+	private def static String getFieldValueExpression(MutableFieldDeclaration field) {
+		val it = field
+		switch (it) {
+			case type.primitiveArray : '''java.util.Arrays.toString(«simpleName»)'''
+			case type.array : '''java.util.Arrays.deepToString(«simpleName»)'''
+			default : simpleName
+		}
+	}
+
+	private def static getFields(MutableTypeDeclaration type, List<String> exclude) {
 		type.declaredFields.filter[!static && !exclude.contains(simpleName)]
 	}
 }
