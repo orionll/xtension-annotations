@@ -32,6 +32,19 @@ class JULLogProcessor extends LogProcessor {
 class Log4jLogProcessor extends LogProcessor {
 	override loggingSystem() { new Log4j() }
 }
+
+class Log4j2LogProcessor extends LogProcessor {
+	override loggingSystem() { new Log4j2() }
+}
+
 class Slf4jLogProcessor extends LogProcessor {
 	override loggingSystem() { new Slf4j() }
+}
+
+class XSlf4jLogProcessor extends LogProcessor {
+	override loggingSystem() { new XSlf4j() }
+}
+
+class JCLLogProcessor extends LogProcessor {
+	override loggingSystem() { new JCL() }
 }

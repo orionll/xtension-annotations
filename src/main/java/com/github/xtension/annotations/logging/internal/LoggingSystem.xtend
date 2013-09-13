@@ -42,6 +42,15 @@ package class Log4j extends ExternalLogging {
 	override initMethod() { "Logger.getLogger" }
 }
 
+package class Log4j2 extends ExternalLogging {
+
+	override className() { "org.apache.logging.log4j.Logger" }
+
+	override loggingName() { "log4j 2.x" }
+
+	override initMethod() { "org.apache.logging.log4j.LogManager.getLogger" }
+}
+
 package class Slf4j extends ExternalLogging {
 
 	override className() { "org.slf4j.Logger" }
@@ -49,4 +58,22 @@ package class Slf4j extends ExternalLogging {
 	override loggingName() { "slf4j" }
 
 	override initMethod() { "org.slf4j.LoggerFactory.getLogger" }
+}
+
+package class XSlf4j extends ExternalLogging {
+
+	override className() { "org.slf4j.ext.XLogger" }
+
+	override loggingName() { "slf4j-ext" }
+
+	override initMethod() { "org.slf4j.ext.XLoggerFactory.getXLogger" }
+}
+
+package class JCL extends ExternalLogging {
+
+	override className() { "org.apache.commons.logging.Log" }
+
+	override loggingName() { "commons-logging" }
+
+	override initMethod() { "org.apache.commons.logging.LogFactory.getLog" }
 }

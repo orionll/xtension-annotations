@@ -6,7 +6,7 @@ import java.lang.annotation.Target
 import org.eclipse.xtend.lib.macro.Active
 
 /**
- * Adds a logger field of type {@link org.apache.log4j.Logger}.
+ * Adds a logger field of type {@link org.slf4j.Logger}.
  */
 @Target(ElementType::TYPE)
 @Active(typeof(Slf4jLogProcessor))
